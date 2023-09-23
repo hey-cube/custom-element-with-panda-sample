@@ -1,10 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+import styles from "./index.css?url";
+
+class MyElement extends HTMLElement {
+  connectedCallback() {
+    const shadow = this.attachShadow({ mode: "open" });
+    const root = createRoot(shadow);
+    root.render(
+      <StrictMode>
+        <link rel="stylesheet" href={styles} />
+        <App />
+      </StrictMode>
+    );
+  }
+}
+
+customElements.define("my-element", MyElement);
